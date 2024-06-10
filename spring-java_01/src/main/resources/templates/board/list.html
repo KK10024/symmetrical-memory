@@ -1,0 +1,142 @@
+<html lang="ko">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Modern Business - Start Bootstrap Template</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    </head>
+    <body class="d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container px-5">
+                    <a class="navbar-brand" href="index.html"><img th:src="@{/img/logo.png}" alt="logo"  width="170px" height="30px"/></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/payment/content}">서비스 신청</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Blog</a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
+                                    <li><a class="dropdown-item" href="blog-home.html">Blog Home</a></li>
+                                    <li><a class="dropdown-item" href="blog-post.html">Blog Post</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">로그인</a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
+                                    <li>
+										<a class="dropdown-item" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+										<a class="dropdown-item" sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a>
+                                    	<a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+                                    	<a class="dropdown-item" th:href="@{/user/user_update_form}" th:text="회원수정"></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Header-->
+			<table>
+			    <thead>
+			        <tr>
+						<th>글번호</th>
+			            <th>제목</th>
+			            <th>작성일시</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        <tr th:each="board, loop : ${paging}">
+						<td th:text="${board.id}"></td>
+			            <td>
+							<a th:href="@{|detail/${board.id}|}" th:text="${board.subject}"></a>
+						</td>
+			            <td th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+			        </tr>
+			    </tbody>
+			</table>
+		<div class="row my-3">
+	     	<div class="col-6">		
+				<a class="btn btn-primary" th:href="@{/board/board_form}" th:text="글등록하기"></a>
+			</div>
+	        <div class="col-6">
+	            <div class="input-group">
+	                <input type="text" id="search_kw" class="form-control" th:value="${kw}">
+	                <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>
+	            </div>
+	        </div>
+	    </div>
+		    <!-- 페이징처리 시작 -->
+		    <div th:if="${!paging.isEmpty()}">
+		        <ul class="pagination justify-content-center">
+		            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+		                <a class="page-link"
+		                    href="javascript:void(0)" th:data-page="${paging.number-1}">
+		                    <span>이전</span>
+		                </a>
+		            </li>
+		            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}" 
+		                th:if="${page >= paging.number-5 and page <= paging.number+5}"
+		                th:classappend="${page == paging.number} ? 'active'" 
+		                class="page-item">
+		                <a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
+		            </li>
+		            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+		                <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">
+		                    <span>다음</span>
+		                </a>
+		            </li>
+		        </ul>
+		    </div>
+		    <!-- 페이징처리 끝 -->
+		  <form th:action="@{/board/board_list}" method="get" id="searchForm">
+	        <input type="hidden" id="kw" name="kw" th:value="${kw}">
+	        <input type="hidden" id="page" name="page" th:value="${paging.number}">
+   		 </form>
+   		 <script layout:fragment="script" type='text/javascript'>
+			const page_elements = document.getElementsByClassName("page-link");
+			Array.from(page_elements).forEach(function(element) {
+			    element.addEventListener('click', function() {
+			        document.getElementById('page').value = this.dataset.page;
+			        document.getElementById('searchForm').submit();
+			    });
+			});
+			const btn_search = document.getElementById("btn_search");
+			btn_search.addEventListener('click', function() {
+			    document.getElementById('kw').value = document.getElementById('search_kw').value;
+			    document.getElementById('page').value = 0;  // 검색버튼을 클릭할 경우 0페이지부터 조회한다.
+			    document.getElementById('searchForm').submit();
+			});
+			</script>
+
+	  <!-- Footer-->
+        <footer class="bg-dark py-4 mt-auto">
+            <div class="container px-5">
+                <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                    <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Your Website 2023</div></div>
+                    <div class="col-auto">
+                        <a class="link-light small" href="#!">Privacy</a>
+                        <span class="text-white mx-1">&middot;</span>
+                        <a class="link-light small" href="#!">Terms</a>
+                        <span class="text-white mx-1">&middot;</span>
+                        <a class="link-light small" href="#!">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script th:src="@{/js/scripts.js}"></script>
+    </body>
+</html>
