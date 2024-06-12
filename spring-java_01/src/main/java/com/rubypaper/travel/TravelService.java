@@ -78,8 +78,6 @@ public class TravelService {
 	    return this.travelRepository.findAll(spec, pageable);
 
 	}
-	
-	
     public Travel getTravel(Integer id) {  
         Optional<Travel> travel = this.travelRepository.findById(id);
         if (travel.isPresent()) {

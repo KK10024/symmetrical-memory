@@ -24,7 +24,6 @@
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
                             <li class="nav-item"><a class="nav-link" th:href="@{/travel/travel_list}">여행지리스트</a></li>
-                            <li class="nav-item"><a class="nav-link" th:href="@{/payment/content}">서비스 신청</a></li>
                             <li class="nav-item">
                             	<li class="nav-item"><a class="nav-link" th:href="@{/board/board_list}">게시판</a></li>
                             </li>
@@ -49,37 +48,31 @@
                     <div class="row gx-5">
                         <div class="col-lg-4 mb-5 mb-lg-0">
 							<h2 class="fw-bolder mb-0">여행지</h2><br>
-								<div>
-									<a th:href="@{/travel/travel_list?kw=서울특별시&page=0}">서울특별시</a>
-									<a th:href="@{/travel/travel_list?kw=강원도&page=0}">강원도</a>
-									<a th:href="@{/travel/travel_list?kw=부산광역시&page=0}">부산광역시</a>		
-									<a th:href="@{/travel/travel_list?kw=인천광역시&page=0}">인천광역시</a> 
-								</div>
-							<div id="map" style="width:350px;height:700px;" class="col-xl-5 col-xxl-6 d-none d-xl-block text-center">
-							<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c77e900c56ee901bea12e4dade4b9af2"></script>
-							<script type="text/javascript">
-								var container = document.getElementById('map');
-								var options = {
-									center: new kakao.maps.LatLng(36, 128),
-									level: 13
-								};
-								var map = new kakao.maps.Map(container, options);
-							</script>
-						</div>
-						</div>
+							<div>
+								<a class="btn" th:href="@{/travel/travel_list?kw=서울특별시&page=0}">서울특별시</a>
+								<a class="btn" th:href="@{/travel/travel_list?kw=강원도&page=0}">강원도</a>
+								<a class="btn" th:href="@{/travel/travel_list?kw=부산광역시&page=0}">부산광역시</a>		
+								<a class="btn" th:href="@{/travel/travel_list?kw=인천광역시&page=0}">인천광역시</a> 
+							</div>
+						</div>		
                         <div class="col-lg-8">
+						<div class="col-6">		
+							<a class="btn" th:href="@{/travel/travel_form}" th:text="글등록하기"></a>
+						</div>				
                             <div class="row gx-5 row-cols-1 row-cols-md-2">
 						        <div class="col mb-5 h-100" th:each="travel, loop : ${travelList}">
 									<div>
-										<img class="card-img-top" th:src="@{/img/}+${travel.imgaddr}"/>
+										<img height="275px" width="350px" class="card-img-top" th:src="@{/img/}+${travel.imgaddr}"/>
 									</div>
 									<h2 class="h5" th:text="${travel.name}"></h2>
-						            <div class="flex-item">
-										<a th:href="@{|detail/${travel.id}|}" th:text="${travel.addr}"></a>
+						            <div>
+										<p class="mb-0" th:text="${travel.addr}"></p>
 									</div>
 						            <p class="mb-0" th:text="${travel.content}"></p>
+						            <div><a class="btn btn-outline-secondary" th:href="@{|detail/${travel.id}|}">자세히보기</a></div>
 						        </div>
 							</div>
+
 						    <!-- 페이징처리 시작 -->
 						    <div th:if="${!travelList.isEmpty()}">
 						        <ul class="pagination justify-content-center">
@@ -128,11 +121,11 @@
 			</section>	
 					
 			
-	  <!-- Footer-->
+        <!-- Footer-->
         <footer class="bg-dark py-4 mt-auto">
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-                    <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Your Website 2023</div></div>
+                    <div class="col-auto"><div class="small m-0 text-white">Travel is Funny! 2024</div></div>
                     <div class="col-auto">
                         <a class="link-light small" href="#!">Privacy</a>
                         <span class="text-white mx-1">&middot;</span>
@@ -144,7 +137,7 @@
             </div>
         </footer>
         <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js}"></script>
         <!-- Core theme JS-->
         <script th:src="@{/js/scripts.js}"></script>
     </body>

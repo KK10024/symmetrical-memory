@@ -24,39 +24,39 @@ public class UserController {
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm) {
-        return "signup_form";
+        return "user/signup_form";
     }
     
     @GetMapping("/login")
     public String login() {
-        return "login_form";
+        return "user/login_form";
     }
     
     @GetMapping("/user_update_form")
 	public String udate_form(@AuthenticationPrincipal UserDetails userDetails , Model model) {   	
     	SiteUser siteuser = this.userService.getUser(userDetails.getUsername());
     	model.addAttribute("siteuser", siteuser);
-    	return "user_update_form";
+    	return "user/user_update_form";
     }
     
     @PostMapping("/user_update_form")
     public String UpdateUser (@Valid SiteUser siteuser, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "/user/user_update_form";
+            return "user/user_update_form";
         }
     	userService.update(siteuser);
-        return "redirect:/user/user_update_form";
+        return "redirect:user/user_update_form";
     }
     @PostMapping("/signup")
     public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "signup_form";
+            return "user/signup_form";
         }
 
         if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect", 
                     "2개의 패스워드가 일치하지 않습니다.");
-            return "signup_form";
+            return "user/signup_form";
         }
 
         
@@ -66,11 +66,11 @@ public class UserController {
         }catch(DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
-            return "signup_form";
+            return "user/signup_form";
         }catch(Exception e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", e.getMessage());
-            return "signup_form";
+            return "user/signup_form";
         }
 
         return "redirect:/";

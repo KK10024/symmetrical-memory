@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.rubypaper.comment.Comment;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -46,6 +47,6 @@ public class Travel {
     @CreatedDate
 	private LocalDateTime create_date;
     
-    @OneToMany(mappedBy = "travel")
+    @OneToMany(mappedBy = "travel", cascade= CascadeType.REMOVE)
     private List<Comment> commentList;
 }

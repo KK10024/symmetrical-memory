@@ -24,7 +24,6 @@
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
                             <li class="nav-item"><a class="nav-link" th:href="@{/travel/travel_list}">여행지리스트</a></li>
-                            <li class="nav-item"><a class="nav-link" th:href="@{/payment/content}">서비스 신청</a></li>
                             <li class="nav-item">
                             	<li class="nav-item"><a class="nav-link" th:href="@{/board/board_list}">게시판</a></li>
                             </li>
@@ -66,7 +65,7 @@
 					</th>
 		        </tr>	   
 			</table>   
-			
+			<button><a class="btn" th:href="@{/travel/delete?(id=${travel.id})}">글 삭제</a></button>
  			<!-- 질문 댓글 Start -->
             <div class="mt-3" th:if="${not #lists.isEmpty(travel.commentList)}">
                 <div th:each="comment,index : ${travel.commentList}" class="comment py-2 text-muted">
@@ -90,10 +89,11 @@
                    			        
         	<!-- body -->
 		<!-- Footer-->
+        <!-- Footer-->
         <footer class="bg-dark py-4 mt-auto">
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-                    <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Your Website 2023</div></div>
+                    <div class="col-auto"><div class="small m-0 text-white">Travel is Funny! 2024</div></div>
                     <div class="col-auto">
                         <a class="link-light small" href="#!">Privacy</a>
                         <span class="text-white mx-1">&middot;</span>

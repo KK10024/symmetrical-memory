@@ -22,7 +22,7 @@ public class BoardController{
 	 * 게시판리스트
 	 * */
 	@GetMapping("/board_list")
-    public String Board_List(Model model, @RequestParam(value="page", defaultValue="0") int page,
+    public String board_List(Model model, @RequestParam(value="page", defaultValue="0") int page,
     		@RequestParam(value = "kw", defaultValue = "") String kw) {
 		Page<Board> paging = this.boardService.getList(page, kw);
         model.addAttribute("paging", paging);
@@ -35,7 +35,7 @@ public class BoardController{
 	 * GET요청
 	 * */
 	@GetMapping("/board_form")
-    public String Board_Create_Form(Board board) {
+    public String board_Form(Board board) {
         return "board/board_form";
     }
 	/*
@@ -51,7 +51,7 @@ public class BoardController{
 	 * 게시판 글삭제 
 	 **/
     @GetMapping("/delete")
-    public String boardDelete(Integer id){
+    public String board_Delete(Integer id){
         boardService.boardDelete(id);
         return "redirect:/board/board_list";
     }
